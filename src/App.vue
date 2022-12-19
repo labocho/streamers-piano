@@ -1,4 +1,5 @@
 <template>
+  <KeyboardView :notesOn="notesOn"></KeyboardView>
   <code>{{ notesOnJoined }}</code>
   <select v-if="midi" v-model="currentInput">
     <option :value="null">Please select input</option>
@@ -10,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, Ref, computed, watch } from 'vue';
+import KeyboardView from "./KeyboardView.vue"
 
 function parseMIDIMessage(data: Uint8Array) {
   switch(data[0]) {
@@ -32,6 +34,7 @@ function parseMIDIMessage(data: Uint8Array) {
 
 export default defineComponent({
   name: 'App',
+  components: { KeyboardView },
   setup() {
     // eslint-disable-next-line
     let midi: Ref<WebMidi.MIDIAccess|null> = ref(null);
