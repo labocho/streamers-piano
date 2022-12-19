@@ -1,20 +1,20 @@
 <template>
 <g :transform="`translate(${offsetX},0)`">
   <g>
-    <rect x="0" y="0" width="30" height="100" :fill="keyState[0] ? '#f00' : '#fff'" stroke="#000" />
-    <rect x="30" y="0" width="30" height="100" :fill="keyState[2] ? '#f00' : '#fff'" stroke="#000" />
-    <rect x="60" y="0" width="30" height="100" :fill="keyState[4] ? '#f00' : '#fff'" stroke="#000" />
-    <rect x="90" y="0" width="30" height="100" :fill="keyState[5] ? '#f00' : '#fff'" stroke="#000" />
-    <rect x="120" y="0" width="30" height="100" :fill="keyState[7] ? '#f00' : '#fff'" stroke="#000" />
-    <rect x="150" y="0" width="30" height="100" :fill="keyState[9] ? '#f00' : '#fff'" stroke="#000" />
-    <rect x="180" y="0" width="30" height="100" :fill="keyState[11] ? '#f00' : '#fff'" stroke="#000" />
+    <rect :x="22.5 * 0" y="0" width="22.5" height="150" :fill="keyState[0] ? '#f00' : '#fff'" stroke="#000" />
+    <rect :x="22.5 * 1" y="0" width="22.5" height="150" :fill="keyState[2] ? '#f00' : '#fff'" stroke="#000" />
+    <rect :x="22.5 * 2" y="0" width="22.5" height="150" :fill="keyState[4] ? '#f00' : '#fff'" stroke="#000" />
+    <rect :x="22.5 * 3" y="0" width="22.5" height="150" :fill="keyState[5] ? '#f00' : '#fff'" stroke="#000" />
+    <rect :x="22.5 * 4" y="0" width="22.5" height="150" :fill="keyState[7] ? '#f00' : '#fff'" stroke="#000" />
+    <rect :x="22.5 * 5" y="0" width="22.5" height="150" :fill="keyState[9] ? '#f00' : '#fff'" stroke="#000" />
+    <rect :x="22.5 * 6" y="0" width="22.5" height="150" :fill="keyState[11] ? '#f00' : '#fff'" stroke="#000" />
   </g>
   <g>
-    <rect x="20" y="0" width="20" height="60" :fill="keyState[1] ? '#f00' : '#000'" stroke="#000" />
-    <rect x="50" y="0" width="20" height="60" :fill="keyState[3] ? '#f00' : '#000'" stroke="#000" />
-    <rect x="110" y="0" width="20" height="60" :fill="keyState[6] ? '#f00' : '#000'" stroke="#000" />
-    <rect x="140" y="0" width="20" height="60" :fill="keyState[8] ? '#f00' : '#000'" stroke="#000" />
-    <rect x="170" y="0" width="20" height="60" :fill="keyState[10] ? '#f00' : '#000'" stroke="#000" />
+    <rect :x="22.5 * 0 + (22.5 - 10)" y="0" width="15" height="97" :fill="keyState[1] ? '#f00' : '#000'" stroke="#000" />
+    <rect :x="22.5 * 1 + (22.5 - 5)" y="0" width="15" height="97" :fill="keyState[3] ? '#f00' : '#000'" stroke="#000" />
+    <rect :x="22.5 * 3 + (22.5 - 10)" y="0" width="15" height="97" :fill="keyState[6] ? '#f00' : '#000'" stroke="#000" />
+    <rect :x="22.5 * 4 + (22.5 - 7)" y="0" width="15" height="97" :fill="keyState[8] ? '#f00' : '#000'" stroke="#000" />
+    <rect :x="22.5 * 5 + (22.5 - 3.5)" y="0" width="15" height="97" :fill="keyState[10] ? '#f00' : '#000'" stroke="#000" />
   </g>
 </g>
 </template>

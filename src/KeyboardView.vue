@@ -1,9 +1,9 @@
 <template>
 <div class="keyboard-container">
-  <svg :viewBox="`0 0 ${210 * octaves} 100`">
+  <svg :viewBox="`0 0 ${157.5 * octaves} 150`">
     <OctaveView
       v-for="i in octavesAsArray"
-      :offsetX="210 * i"
+      :offsetX="157.5 * i"
       :c="lowestC + 12 * i"
       :notesOn="notesOn"
       :key="i"
