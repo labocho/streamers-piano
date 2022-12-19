@@ -1,6 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <code>{{ notesOnJoined }}</code>
   <select v-if="midi" v-model="currentInput">
     <option :value="null">Please select input</option>
     <option v-for="input in inputs" :key="input.id" :value="input">
@@ -11,7 +10,6 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, Ref, computed, watch } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
 
 function parseMIDIMessage(data: Uint8Array) {
   switch(data[0]) {
@@ -34,9 +32,6 @@ function parseMIDIMessage(data: Uint8Array) {
 
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
-  },
   setup() {
     // eslint-disable-next-line
     let midi: Ref<WebMidi.MIDIAccess|null> = ref(null);
@@ -44,6 +39,10 @@ export default defineComponent({
       return midi.value === null ? [] : Array.from(midi.value.inputs.values());
     });
     let currentInput: Ref<WebMidi.MIDIInput|null> = ref(null);
+    let notesOn: Ref<Set<number>> = ref(new Set);
+    let notesOnJoined: Ref<string> = computed(() => {
+      return Array.from(notesOn.value).join(", ");
+    });
 
     onMounted(() => {
       window.navigator.requestMIDIAccess().then((m) => {
@@ -52,7 +51,21 @@ export default defineComponent({
     });
 
     const inputEventHandler = (message: WebMidi.MIDIMessageEvent) => {
-      console.log(parseMIDIMessage(message.data));
+      const parsed = parseMIDIMessage(message.data);
+      if (parsed === null) return;
+
+      const v = notesOn.value;
+      switch(parsed.type) {
+        case "NOTE_ON":
+          if (v.has(parsed.pitch)) return;
+          v.add(parsed.pitch)
+          notesOn.value = v;
+          break;
+        case "NOTE_OFF":
+          if (!v.delete(parsed.pitch)) return;
+          notesOn.value = v;
+          break;
+      }
     };
 
     watch(currentInput, (newValue, oldValue) => {
@@ -64,6 +77,8 @@ export default defineComponent({
       currentInput,
       inputs,
       midi,
+      notesOn,
+      notesOnJoined,
     };
   }
 });
