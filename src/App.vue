@@ -1,12 +1,44 @@
 <template>
-  <KeyboardView :notesOn="notesOn"></KeyboardView>
-  <code>{{ notesOnJoined }}</code>
-  <select v-if="midi" v-model="currentInput">
-    <option :value="null">Please select input</option>
-    <option v-for="input in inputs" :key="input.id" :value="input">
-      {{ input.name }}
-    </option>
-  </select>
+<div class="container" style="height: 100%; display: flex; flex-direction: column;">
+  <form style="flex-grow: 0; display: flex; padding: 1em 0 2em;">
+      <div class="me-3">
+        <label class="form-label" for="">MIDI Device</label>
+        <select class="form-select" v-if="midi" v-model="currentInput">
+          <option :value="null">Please select input</option>
+          <option v-for="input in inputs" :key="input.id" :value="input">
+            {{ input.name }}
+          </option>
+        </select>
+      </div>
+      <div class="me-3">
+        <label class="form-label" for="">Lowest C</label>
+        <select class="form-select" v-model.number="lowestC">
+          <option :value="12">C0</option>
+          <option :value="24">C1</option>
+          <option :value="36">C2</option>
+          <option :value="48">C3</option>
+          <option :value="60">C4</option>
+          <option :value="72">C5</option>
+          <option :value="84">C6</option>
+        </select>
+      </div>
+        <div class="me-3">
+        <label class="form-label" for="">Octaves</label>
+        <select class="form-select" v-model.number="octaves">
+          <option :value="1">1</option>
+          <option :value="2">2</option>
+          <option :value="3">3</option>
+          <option :value="4">4</option>
+          <option :value="5">5</option>
+          <option :value="6">6</option>
+          <option :value="7">7</option>
+        </select>
+      </div>
+  </form>
+  <div style="flex-grow: 1; display: flex; align-items: center;">
+    <KeyboardView v-if="currentInput" :notesOn="notesOn" :octaves="octaves" :lowestC="lowestC"></KeyboardView>
+  </div>
+</div>
 </template>
 
 <script lang="ts">
@@ -37,15 +69,14 @@ export default defineComponent({
   components: { KeyboardView },
   setup() {
     // eslint-disable-next-line
-    let midi: Ref<WebMidi.MIDIAccess|null> = ref(null);
-    let inputs = computed(() => {
+    const midi: Ref<WebMidi.MIDIAccess|null> = ref(null);
+    const inputs = computed(() => {
       return midi.value === null ? [] : Array.from(midi.value.inputs.values());
     });
-    let currentInput: Ref<WebMidi.MIDIInput|null> = ref(null);
-    let notesOn: Ref<Set<number>> = ref(new Set);
-    let notesOnJoined: Ref<string> = computed(() => {
-      return Array.from(notesOn.value).join(", ");
-    });
+    const currentInput: Ref<WebMidi.MIDIInput|null> = ref(null);
+    const notesOn: Ref<Set<number>> = ref(new Set);
+    const lowestC: Ref<number> = ref(48);
+    const octaves: Ref<number> = ref(2);
 
     onMounted(() => {
       window.navigator.requestMIDIAccess().then((m) => {
@@ -79,21 +110,14 @@ export default defineComponent({
     return {
       currentInput,
       inputs,
+      lowestC,
       midi,
       notesOn,
-      notesOnJoined,
+      octaves,
     };
   }
 });
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

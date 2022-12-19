@@ -1,14 +1,20 @@
 <template>
-<div>
-  <svg width="420">
-    <OctaveView :offsetX="0" :notesOn="notesOn" :c="48"></OctaveView>
-    <OctaveView :offsetX="210" :notesOn="notesOn" :c="60"></OctaveView>
+<div class="keyboard-container">
+  <svg :viewBox="`0 0 ${210 * octaves} 100`">
+    <OctaveView
+      v-for="i in octavesAsArray"
+      :offsetX="210 * i"
+      :c="lowestC + 12 * i"
+      :notesOn="notesOn"
+      :key="i"
+    >
+    </OctaveView>
   </svg>
 </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
 import OctaveView from "./KeyboardView/OctaveView.vue"
 
 export default defineComponent({
@@ -19,10 +25,28 @@ export default defineComponent({
       type: Set as PropType<Set<number>>,
       required: true,
     },
+    octaves: {
+      type: Number,
+      required: true,
+    },
+    lowestC: {
+      type: Number,
+      required: true,
+    }
   },
-  setup() {
-    return {}
+  setup(props) {
+    const octavesAsArray = computed(() => {
+      return [...new Array(props.octaves)].map((_, i ) => i);
+    });
+    return {
+      octavesAsArray,
+    }
   },
 })
 </script>
 
+<style scoped>
+.keyboard-container {
+  width: 100%;
+}
+</style>
